@@ -39,7 +39,7 @@ closeButton.addEventListener('click', () => {
 // Function to handle cell click event
 function handleCellClick(event) {
   if (isGameOver) return;
-  
+
   const index = Array.from(cells).indexOf(event.target);
 
   // Prevent clicking on an already occupied cell
@@ -59,7 +59,7 @@ function handleCellClick(event) {
   }
 }
 
-// AI's move using Minimax Algorithm
+// AI's move using Minimax Algorithm (Perfect Strategy)
 function aiMove() {
   const bestMove = getBestMove(boardState);
   boardState[bestMove] = 'o';
@@ -99,7 +99,7 @@ function minimax(board, depth, isMaximizing) {
   }
 }
 
-// Get the best move for AI using Minimax
+// Get the best move for AI using Minimax (Perfect Strategy)
 function getBestMove(board) {
   let bestMove = -1;
   let bestValue = -Infinity;
