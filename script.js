@@ -59,23 +59,79 @@ function handleCellClick(event) {
   }
 }
 
-// AI's move - Random AI (Basic)
+// AI's move using Minimax Algorithm
 function aiMove() {
-  const availableCells = boardState.map((value, index) => value === null ? index : null).filter(value => value !== null);
-
-  if (availableCells.length === 0) return;
-
-  // Pick a random index from available cells
-  const randomMove = availableCells[Math.floor(Math.random() * availableCells.length)];
-  
-  // AI makes its move
-  boardState[randomMove] = 'o';
-  cells[randomMove].classList.add('o');
+  const bestMove = getBestMove(boardState);
+  boardState[bestMove] = 'o';
+  cells[bestMove].classList.add('o');
 
   // Check if the AI wins
   checkWinner();
   
   isPlayerOTurn = !isPlayerOTurn;  // Switch turns
+}
+
+// Minimax Algorithm to get the best move
+function minimax(board, depth, isMaximizing) {
+  const winner = checkWinnerMinimax(board);
+  if (winner === 'o') return 10 - depth; // AI wins
+  if (winner === 'x') return depth - 10; // Player wins
+  if (!board.includes(null)) return 0; // Draw
+
+  const availableMoves = getAvailableMoves(board);
+  
+  if (isMaximizing) {
+    let best = -Infinity;
+    for (let move of availableMoves) {
+      board[move] = 'o'; // AI move
+      best = Math.max(best, minimax(board, depth + 1, false));
+      board[move] = null; // Undo move
+    }
+    return best;
+  } else {
+    let best = Infinity;
+    for (let move of availableMoves) {
+      board[move] = 'x'; // Player move
+      best = Math.min(best, minimax(board, depth + 1, true));
+      board[move] = null; // Undo move
+    }
+    return best;
+  }
+}
+
+// Get the best move for AI using Minimax
+function getBestMove(board) {
+  let bestMove = -1;
+  let bestValue = -Infinity;
+  const availableMoves = getAvailableMoves(board);
+  
+  for (let move of availableMoves) {
+    board[move] = 'o'; // AI move
+    const moveValue = minimax(board, 0, false);
+    board[move] = null; // Undo move
+    
+    if (moveValue > bestValue) {
+      bestValue = moveValue;
+      bestMove = move;
+    }
+  }
+  
+  return bestMove;
+}
+
+// Get available moves (empty cells)
+function getAvailableMoves(board) {
+  return board.map((value, index) => value === null ? index : null).filter(value => value !== null);
+}
+
+// Evaluate the winner for Minimax (returns 'o' or 'x' or null)
+function checkWinnerMinimax(board) {
+  for (const [a, b, c] of winningCombinations) {
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      return board[a];
+    }
+  }
+  return null;
 }
 
 // Function to check for a winner
