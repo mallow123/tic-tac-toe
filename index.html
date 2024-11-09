@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operating System - Tic-Tac-Toe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="os-container">
+    <header class="taskbar">
+      <div class="start-menu">
+        <button id="startButton">Start</button>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search..." />
+      </div>
+      <div class="app-launcher">
+        <button id="launchTicTacToe">Tic-Tac-Toe</button>
+      </div>
+    </header>
+    
+    <div class="desktop">
+      <!-- Desktop Icons -->
+      <div class="desktop-icon" id="ticTacToeIcon">
+        <img src="images.jpg" alt="Tic-Tac-Toe Icon" />
+        <span>Tic-Tac-Toe</span>
+      </div>
+    </div>
+
+    <!-- Tic-Tac-Toe Window -->
+    <div class="game-window" id="gameWindow">
+      <div class="window-header">
+        <span>Tic-Tac-Toe</span>
+        <button id="closeButton">X</button>
+      </div>
+      <div class="game-container">
+        <div class="board" id="board">
+          <div class="cell" data-cell></div>
+          <div class="cell" data-cell></div>
+          <div class="cell" data-cell></div>
+          <div class="cell" data-cell></div>
+          <div class="cell" data-cell></div>
+          <div class="cell" data-cell></div>
+          <div class="cell" data-cell></div>
+          <div class="cell" data-cell></div>
+          <div class="cell" data-cell></div>
+        </div>
+        <div class="message" id="message">
+          <span id="winner-message"></span>
+          <button id="restartButton">Restart Game</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

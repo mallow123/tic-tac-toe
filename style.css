@@ -1,0 +1,413 @@
+/* Apply Windows-like background to the entire page */
+body {
+    background-image: url('ameya-sawant-4-USf1OKeYo-unsplash.jpg'); /* Replace with your Windows-like wallpaper */
+    background-size: cover;  /* Ensures the wallpaper covers the whole page */
+    background-position: center; /* Center the wallpaper */
+    background-attachment: fixed; /* Keep the background fixed during scroll */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  /* Use a system-like font */
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Ensure the background fills the entire viewport */
+  }
+  
+  /* Game window styling - floating window */
+  #gameWindow {
+    background-color: rgba(255, 255, 255, 0.8); /* Transparent background to create a frosted-glass effect */
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px; /* Set a fixed width */
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2); /* Add shadow to make it look like it's floating */
+    position: relative;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: none; /* Initially hidden until opened */
+  }
+  
+  /* Title Bar of the window */
+  #gameWindow .title-bar {
+    background-color: #2f2f2f;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+    cursor: move;
+  }
+  
+  /* Game Controls (Start, Close, Restart) */
+  button {
+    background-color: #0078d4;
+    border: none;
+    padding: 10px;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #005a8b;
+  }
+  
+  button:active {
+    background-color: #004578;
+  }
+  
+  /* Cell styles */
+  [data-cell] {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 32px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    margin: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  [data-cell].x {
+    color: #ff00ff; /* Neon Pink for X */
+    transform: scale(1.2);
+  }
+  
+  [data-cell].o {
+    color: #00ff00; /* Neon Green for O */
+    transform: scale(1.2);
+  }
+  
+  [data-cell]:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    transform: translateY(-5px); /* Give a 3D hover effect */
+  }
+  
+  /* Message styling */
+  #message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+    display: none;
+  }
+  
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    flex-direction: column;
+  }
+  
+  .os-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .taskbar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to bottom, #6e7e8d, #4b5b69); /* Windows 7-like gradient */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.5);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+  
+/* Start Menu Button */
+.start-menu button,
+.app-launcher button {
+    background-color: #f2f2f2;
+    border: 1px solid #d0d0d0;
+    color: #333;
+    padding: 5px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+  
+/* Search bar input */
+.search-bar input {
+    padding: 5px;
+    font-size: 1rem;
+    width: 200px;
+    border-radius: 3px;
+    border: 1px solid #d0d0d0;
+}
+
+  
+  .desktop {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    gap: 20px;
+  }
+  
+  .desktop-icon {
+    text-align: center;
+    cursor: pointer;
+    width: 100px;
+  }
+  
+  .desktop-icon img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .desktop-icon span {
+    display: block;
+    margin-top: 5px;
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  .game-window {
+    display: none;
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    z-index: 10;
+  }
+  
+  .window-header {
+    background: #2a2a2a;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #closeButton {
+    background: #ff3333;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  #closeButton:hover {
+    background: #cc0000;
+  }
+  
+  .game-container {
+    padding: 10px;
+  }
+  
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0 auto;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  .cell {
+    width: 100px;
+    height: 100px;
+    background: rgba(26, 38, 54, 0.8);
+    border: 2px solid rgba(51, 161, 253, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .cell:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(102, 178, 255, 0.6);
+  }
+  
+  .cell.x::before,
+  .cell.o::before {
+    font-size: 3rem;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+  
+  .cell.x::before {
+    content: 'X';
+    background-image: radial-gradient(circle, #ff00cc, #00b3ff);
+  }
+  
+  .cell.o::before {
+    content: 'O';
+    background-image: radial-gradient(circle, #66ffcc, #ff66ff);
+  }
+  
+  .message {
+    display: none;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #66ff66;
+  }
+  
+  .message button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #33a1fd;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .message button:hover {
+    background: #66b2ff;
+  }
+  /* Game window styling - floating window with a proper pop-up feel */
+#gameWindow {
+    background-color: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2); /* Shadow for floating effect */
+    position: relative;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: none;
+    transition: transform 0.3s ease-in-out; /* Smooth opening animation */
+}
+
+#gameWindow.show {
+    display: block;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Window header styling */
+#gameWindow .window-header {
+    background-color: #4f81bd;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+    cursor: move;
+}
+
+/* Close button */
+#closeButton {
+    background: #ff3333;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+#closeButton:hover {
+    background: #cc0000;
+}
+
+/* Board and cells styles */
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0 auto;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background: rgba(26, 38, 54, 0.8);
+    border: 2px solid rgba(51, 161, 253, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+.cell:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(102, 178, 255, 0.6);
+}
+
+/* Restart button styling */
+.message button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #33a1fd;
+    color: #fff;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.message button:hover {
+    background: #66b2ff;
+}
+
+/* Message styling for winner or draw */
+#message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+    display: none;
+}
+
+#message .winner-message {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+/* Global font settings */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
