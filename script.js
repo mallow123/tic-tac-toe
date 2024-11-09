@@ -38,7 +38,7 @@ closeButton.addEventListener('click', () => {
 
 // Function to handle cell click event
 function handleCellClick(event) {
-  if (isGameOver) return;
+  if (isGameOver || isPlayerOTurn) return; // Disable player clicks if the game is over or it's AI's turn
 
   const index = Array.from(cells).indexOf(event.target);
 
@@ -54,7 +54,7 @@ function handleCellClick(event) {
 
   // If no winner, let the AI play
   if (!isGameOver) {
-    isPlayerOTurn = !isPlayerOTurn;
+    isPlayerOTurn = true; // Set AI's turn
     setTimeout(aiMove, 500);  // AI makes its move after a delay
   }
 }
@@ -68,7 +68,7 @@ function aiMove() {
   // Check if the AI wins
   checkWinner();
   
-  isPlayerOTurn = !isPlayerOTurn;  // Switch turns
+  isPlayerOTurn = false;  // Switch back to player X's turn
 }
 
 // Minimax Algorithm to get the best move
